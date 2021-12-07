@@ -4,10 +4,29 @@
  * This project uses @Incubating APIs which are subject to change.
  */
 
+buildscript {
+    ext {
+        springBootVersion = '2.5.6.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
 plugins {
     id 'java'
     id 'maven-publish'
+    id 'org.springframework.boot' version '2.5.6'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 }
+
+group = 'com.gainwell.si'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
 
 configurations {
     compileOnly {
@@ -39,11 +58,21 @@ dependencies {
 
 }
 
-group = 'com.gainwell'
-version = '0.0.1-SNAPSHOT'
-description = 'System-Integrator-API'
-java.sourceCompatibility = JavaVersion.VERSION_1_8
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from(components.java)
+        }
+    }
+}
 
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+jar {
+    enabled=true
+}
 /*publishing {
     publications {
         maven(MavenPublication) {
@@ -51,6 +80,7 @@ java.sourceCompatibility = JavaVersion.VERSION_1_8
         }
     }
 }*/
+
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
